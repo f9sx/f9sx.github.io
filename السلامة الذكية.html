@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>السلامة الذكية</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f8f9;--surface:#fff;--ink:#0d2b33;--muted:#5b747b;--line:#d9e6e9;--blue:#0b5f8a;--blue-soft:#e0f0f8;--green:#13896b;--green-soft:#dff4ec;--red:#c4382f;--red-soft:#fbe6e4;--amber:#b7791f;--amber-soft:#fcf0d9;--shadow:0 1px 2px rgba(13,43,51,.06),0 6px 18px rgba(13,43,51,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1a1f;--surface:#122a31;--ink:#e6f2f4;--muted:#93acb3;--line:#244148;--blue:#6cc0ea;--blue-soft:#12394b;--green:#4fd1a7;--green-soft:#123d32;--red:#ff8b82;--red-soft:#4a1f1c;--amber:#f0b95a;--amber-soft:#403016;--shadow:none}}
+:root[data-theme="dark"]{--bg:#0a1a1f;--surface:#122a31;--ink:#e6f2f4;--muted:#93acb3;--line:#244148;--blue:#6cc0ea;--blue-soft:#12394b;--green:#4fd1a7;--green-soft:#123d32;--red:#ff8b82;--red-soft:#4a1f1c;--amber:#f0b95a;--amber-soft:#403016;--shadow:none}
+*{box-sizing:border-box;margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;line-height:1.7;min-height:100vh}
+.app{max-width:520px;margin:auto;padding:0 16px 96px}
+header.top{display:flex;align-items:center;gap:10px;padding:18px 0 8px}
+.logo{width:40px;height:40px;border-radius:12px;background:var(--blue);color:#fff;display:grid;place-items:center}
+header.top h1{font-size:19px}
+header.top p{font-size:12px;color:var(--muted);line-height:1.3}
+svg.i{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.view{display:none}.view.on{display:block}
+h2{font-size:22px;margin:14px 0 4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
+.hero{background:var(--blue);color:#fff;border-radius:22px;padding:22px 20px;margin:10px 0 18px;position:relative;overflow:hidden}
+.hero h2{margin:0 0 6px;font-size:24px}.hero p{font-size:14px;opacity:.9;max-width:26ch}
+.hero svg.bg{position:absolute;left:-14px;bottom:-18px;width:130px;height:130px;opacity:.16;stroke:#fff;fill:none;stroke-width:1.4}
+.quick{display:grid;gap:12px}
+.qbtn{display:flex;align-items:center;gap:14px;width:100%;text-align:right;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;font:inherit;color:inherit;cursor:pointer;box-shadow:var(--shadow)}
+.qbtn .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center}
+.qbtn b{display:block;font-size:16px}.qbtn span.d{font-size:13px;color:var(--muted)}
+.ic.b{background:var(--blue-soft);color:var(--blue)}.ic.g{background:var(--green-soft);color:var(--green)}.ic.a{background:var(--amber-soft);color:var(--amber)}
+.emerg{margin-top:18px;background:var(--red-soft);color:var(--red);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:center;font-size:14px}
+button:focus-visible,input:focus-visible,label:focus-within{outline:3px solid var(--blue);outline-offset:2px}
+.progress{background:var(--line);border-radius:99px;height:10px;overflow:hidden;margin:8px 0 18px}
+.progress i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+.group{background:var(--surface);border:1px solid var(--line);border-radius:18px;margin-bottom:14px;overflow:hidden}
+.group h3{display:flex;gap:10px;align-items:center;padding:14px 16px;font-size:16px;background:var(--blue-soft);color:var(--blue)}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;border-top:1px solid var(--line);cursor:pointer;font-size:15px}
+.chk input{width:22px;height:22px;accent-color:var(--green);flex:none;margin-top:3px}
+.chk input:checked+span{color:var(--muted);text-decoration:line-through}
+.done{display:none;background:var(--green-soft);color:var(--green);border-radius:16px;padding:14px 16px;font-weight:700;text-align:center}
+.btn{font:inherit;border:0;border-radius:14px;padding:13px 18px;font-weight:700;cursor:pointer;background:var(--blue);color:#fff}
+.btn.alt{background:var(--blue-soft);color:var(--blue)}
+.search{position:relative;margin-bottom:10px}
+.search input{width:100%;font:inherit;font-size:16px;padding:14px 46px 14px 14px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.search svg{position:absolute;right:14px;top:14px;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:6px 14px;cursor:pointer}
+.sug{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:-4px 0 12px;overflow:hidden}
+.sug button{display:block;width:100%;text-align:right;font:inherit;padding:11px 14px;background:none;border:0;border-top:1px solid var(--line);color:var(--ink);cursor:pointer}
+.sug button:first-child{border-top:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.card .head{padding:18px 16px;background:var(--red-soft);color:var(--red)}
+.card .head h3{font-size:20px;color:var(--ink)}.card .head small{color:var(--muted);display:block;direction:ltr;text-align:right}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.badge{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--red);color:#fff}
+.badge.w{background:var(--amber);color:#1b1200}
+.sec{padding:14px 16px;border-top:1px solid var(--line)}
+.sec h4{display:flex;gap:8px;align-items:center;font-size:15px;margin-bottom:6px}
+.sec h4 svg{width:20px;height:20px}
+.sec.h h4{color:var(--red)}.sec.f h4{color:var(--green)}.sec.d h4{color:var(--blue)}
+.sec ul{padding-inline-start:20px;font-size:14px}
+.empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:14px}
+.cam{position:relative;aspect-ratio:3/4;max-height:56vh;width:100%;background:#071419;border-radius:22px;overflow:hidden;display:grid;place-items:center;color:#9fc3cc}
+.cam .frame{position:absolute;inset:18% 12%;border:3px solid #fff;border-radius:14px;opacity:.85}
+.cam .scan{position:absolute;inset-inline:12%;top:18%;height:3px;background:var(--green);box-shadow:0 0 14px var(--green);display:none}
+.cam.busy .scan{display:block;animation:sw 1.4s ease-in-out infinite alternate}
+@keyframes sw{to{top:80%}}
+@media (prefers-reduced-motion:reduce){.cam.busy .scan{animation:none;top:50%}}
+.cam img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.label{position:absolute;inset:18% 12%;background:#fff;color:#111;border-radius:10px;padding:12px;font-size:13px;display:none;direction:ltr;text-align:left;line-height:1.5}
+.label.on{display:block}
+.label .dia{width:34px;height:34px;border:3px solid #d22;transform:rotate(45deg);margin:6px 0 10px 8px}
+.cam-actions{display:flex;gap:10px;margin:14px 0}
+.cam-actions .btn{flex:1;display:flex;justify-content:center;gap:8px;align-items:center}
+.ocr{background:var(--surface);border:1px dashed var(--blue);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:14px}
+.ocr code{direction:ltr;display:block;text-align:left;font-size:13px;color:var(--blue);white-space:pre-wrap}
+nav.tabs{position:fixed;bottom:0;inset-inline:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabs .in{display:flex;width:100%;max-width:520px}
+nav.tabs button{flex:1;font:inherit;font-size:12px;background:none;border:0;color:var(--muted);padding:10px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+nav.tabs button.on{color:var(--blue);font-weight:700}
+[hidden]{display:none!important}
+.fld{display:block;margin-bottom:12px;font-size:14px;font-weight:700}.fld input,.fld textarea{display:block;width:100%;font:inherit;font-weight:400;font-size:15px;margin-top:4px;padding:11px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.arow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+#login{position:fixed;inset:0;z-index:20;background:var(--bg);display:grid;place-items:center;padding:24px}.lbox{max-width:380px;width:100%;text-align:center}.lbox .logo{width:64px;height:64px;border-radius:20px;margin:0 auto 14px}.lbox .role{display:inline-block;margin:8px 0 18px;padding:4px 14px;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h14V10M10 20v-6h4v6"/></symbol>
+<symbol id="list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></symbol>
+<symbol id="book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 19V5M9 8h6"/></symbol>
+<symbol id="scan" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3M4 12h16"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4"/></symbol>
+<symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+<symbol id="alert" viewBox="0 0 24 24"><path d="M12 3l10 17H2zM12 10v5M12 18v.5"/></symbol>
+<symbol id="aid" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M12 11v5M9.5 13.5h5"/></symbol>
+<symbol id="trash" viewBox="0 0 24 24"><path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+<symbol id="cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+<symbol id="img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 9"/></symbol>
+<symbol id="phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3M7.5 15h9"/></symbol>
+</defs></svg>
+
+<div class="app">
+<header class="top">
+  <div class="logo"><svg class="i"><use href="#shield"/></svg></div>
+  <div><h1>السلامة الذكية</h1><p>رفيقك الآمن في المختبر</p></div>
+  <button class="chip" id="who" hidden style="margin-inline-start:auto"></button>
+</header>
+
+<main>
+<section id="home" class="view on">
+  <div class="hero">
+    <h2>مرحباً بك في المختبر</h2>
+    <p>راجع إرشادات السلامة، وابحث عن أي مادة قبل أن تلمسها.</p>
+    <svg class="bg" viewBox="0 0 24 24"><use href="#flask"/></svg>
+  </div>
+  <div class="quick">
+    <button class="qbtn" data-go="guide"><span class="ic g"><svg class="i"><use href="#list"/></svg></span><span><b>الإرشادات</b><span class="d">قائمة التحقق قبل بدء التجربة</span></span></button>
+    <button class="qbtn" data-go="msds"><span class="ic b"><svg class="i"><use href="#book"/></svg></span><span><b>بحث MSDS</b><span class="d">المخاطر والإسعافات والتخلص الآمن</span></span></button>
+    <button class="qbtn" data-go="scan"><span class="ic a"><svg class="i"><use href="#scan"/></svg></span><span><b>الماسح الذكي</b><span class="d">صوّر ملصق المادة واعرف بياناتها</span></span></button>
+  </div>
+  <div class="emerg"><svg class="i"><use href="#phone"/></svg><span>في حالة الطوارئ: أبلغ المشرف فوراً، ثم اتصل بالدفاع المدني على <b>998</b> أو الإسعاف على <b>997</b>.</span></div>
+</section>
+
+<section id="guide" class="view">
+  <h2>إرشادات السلامة</h2>
+  <p class="sub">أكمل كل البنود قبل أن تبدأ التجربة.</p>
+  <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+  <div id="groups"></div>
+  <div class="done" id="done">أنت جاهز. ابدأ تجربتك بأمان.</div>
+  <button class="btn alt" id="reset" style="margin-top:12px">إعادة ضبط القائمة</button>
+</section>
+
+<section id="msds" class="view">
+  <h2>بيانات السلامة MSDS</h2>
+  <p class="sub">اكتب اسم المادة بالعربية أو الإنجليزية أو الصيغة الكيميائية.</p>
+  <div class="search"><svg class="i"><use href="#search"/></svg><input id="q" type="search" placeholder="مثال: حمض الهيدروكلوريك أو NaOH" autocomplete="off" aria-label="بحث عن مادة"></div>
+  <div class="chips" id="chips"></div>
+  <div id="sug"></div>
+  <div id="result"><div class="empty">ابدأ بالكتابة أو اختر مادة من الاقتراحات.</div></div>
+</section>
+
+<section id="scan" class="view">
+  <h2>الماسح الذكي</h2>
+  <p class="sub">وجّه الكاميرا إلى ملصق المادة، أو ارفع صورة له.</p>
+  <div class="cam" id="cam">
+    <div class="frame"></div><div class="scan"></div>
+    <span id="camHint" style="text-align:center;padding:0 30px"><svg class="i" style="width:44px;height:44px;margin-bottom:6px"><use href="#cam"/></svg><br>ضع الملصق داخل الإطار</span>
+    <div class="label" id="lbl"><div class="dia"></div><b>HYDROCHLORIC ACID</b><br>HCl 37% · CAS 7647-01-0<br>DANGER: Causes severe skin burns and eye damage.</div>
+  </div>
+  <div class="cam-actions">
+    <button class="btn" id="snap"><svg class="i"><use href="#cam"/></svg>التقاط صورة</button>
+    <button class="btn alt" id="upl"><svg class="i"><use href="#img"/></svg>رفع صورة</button>
+  </div>
+  <input type="file" id="file" accept="image/*" hidden>
+  <div id="scanOut"></div>
+</section>
+<section id="admin" class="view">
+  <h2 id="atitle">رفع مادة</h2>
+  <p class="sub" id="asub">أضف مادة جديدة لتظهر لجميع الطلاب في البحث والماسح.</p>
+  <label class="fld">الاسم بالعربية *<input id="f-ar"></label>
+  <label class="fld">الاسم بالإنجليزية<input id="f-en" dir="ltr"></label>
+  <label class="fld">الصيغة الكيميائية<input id="f-f" dir="ltr"></label>
+  <label class="fld">رقم CAS<input id="f-cas" dir="ltr"></label>
+  <label class="fld">أسماء بديلة (افصل بفاصلة)<input id="f-al"></label>
+  <label class="fld">الوسوم (افصل بفاصلة، وضع ! قبل وسم التحذير)<input id="f-bd" placeholder="أكّال,!ضار بالبيئة"></label>
+  <label class="fld">المخاطر * (كل سطر بند)<textarea id="f-haz" rows="3"></textarea></label>
+  <label class="fld">الإسعافات الأولية * (كل سطر بند)<textarea id="f-aid" rows="3"></textarea></label>
+  <label class="fld">التخلص الآمن * (كل سطر بند)<textarea id="f-dis" rows="3"></textarea></label>
+  <button class="btn" id="save" style="width:100%">إضافة المادة</button>
+  <p id="amsg" role="status" style="margin:10px 0;font-weight:700"></p>
+  <div id="adminOnly" hidden><h2 style="font-size:18px">بانتظار الاعتماد</h2><div id="plist"></div></div>
+  <h2 style="font-size:18px" id="mh">المواد التي أضفتها</h2>
+  <div id="alist"></div>
+</section>
+</main>
+</div>
+
+<div id="login"><div class="lbox">
+  <div class="logo"><svg class="i" style="width:34px;height:34px"><use href="#shield"/></svg></div>
+  <h2>تسجيل الدخول</h2>
+  <p class="sub" style="margin-bottom:0">يتم الدخول بحسابك الحالي في Claude.</p>
+  <b id="lg-name" style="font-size:18px;display:block;margin-top:14px">ضيف</b>
+  <span class="role" id="lg-role">جارٍ التحقق…</span>
+  <button class="btn" id="enter" style="width:100%">دخول</button>
+</div></div>
+<nav class="tabs"><div class="in">
+  <button data-go="home" class="on"><svg class="i"><use href="#home"/></svg>الرئيسية</button>
+  <button data-go="guide"><svg class="i"><use href="#list"/></svg>الإرشادات</button>
+  <button data-go="msds"><svg class="i"><use href="#book"/></svg>MSDS</button>
+  <button data-go="scan"><svg class="i"><use href="#scan"/></svg>الماسح</button>
+  <button data-go="admin" id="adminTab" hidden><svg class="i"><use href="#plus"/></svg>رفع مادة</button>
+</div></nav>
+
+<script>
+const CHEM=[
+{id:'hcl',ar:'حمض الهيدروكلوريك',en:'Hydrochloric Acid',f:'HCl',cas:'7647-01-0',alias:['hcl','hydrochloric','حمض الهيدروكلوريك','هيدروكلوريك','حمض الملح'],
+ badges:[['أكّال',0],['ضار بالتنفس',1]],
+ haz:['يسبب حروقاً شديدة للجلد وتلفاً للعين.','أبخرته تهيّج الجهاز التنفسي وقد تسبب السعال والاختناق.','يتفاعل مع المواد القلوية والمعادن ويطلق غاز الهيدروجين.'],
+ aid:['العين: اغسلها بماء جارٍ لمدة 15 دقيقة على الأقل وأبقِ الجفنين مفتوحين.','الجلد: انزع الملابس الملوثة واشطف بالماء 15 دقيقة.','الاستنشاق: انتقل إلى هواء نقي واطلب المساعدة.','لا تُحدث قيئاً عند البلع، واشرب ماءً وأبلغ المشرف فوراً.'],
+ disp:['لا تصبّه في المجاري مباشرة.','عادله ببطء بمحلول قلوي ضعيف (بيكربونات الصوديوم) داخل الشفاط.','اجمع الناتج في حاوية نفايات سائلة حمضية معنونة.']},
+{id:'naoh',ar:'هيدروكسيد الصوديوم',en:'Sodium Hydroxide',f:'NaOH',cas:'1310-73-2',alias:['naoh','sodium hydroxide','هيدروكسيد الصوديوم','صودا كاوية','الصودا الكاوية'],
+ badges:[['أكّال',0],['يتفاعل مع الماء',1]],
+ haz:['يسبب حروقاً كيميائية شديدة للجلد والعين.','يُطلق حرارة عالية عند إذابته في الماء.','الغبار يهيّج الأنف والحلق.'],
+ aid:['العين: اغسلها بماء جارٍ 20 دقيقة على الأقل واطلب الرعاية الطبية.','الجلد: اشطف بكثرة من الماء وانزع الملابس الملوثة.','البلع: اشرب ماءً ولا تُحدث قيئاً، وأبلغ المشرف فوراً.'],
+ disp:['أضِفه إلى الماء ببطء وليس العكس.','عادله بحمض مخفف حتى يصبح الرقم الهيدروجيني قريباً من 7.','اجمع المحلول في حاوية نفايات قلوية معنونة.']}];
+const X=(ar,en,f,cas,al,b,h,a,d)=>CHEM.push({id:cas,ar,en,f,cas,alias:al.split(','),badges:b.split(',').map(x=>x[0]=='!'?[x.slice(1),1]:[x,0]),haz:h.split('|'),aid:a.split('|'),disp:d.split('|')});
+const EYE='العين: اغسلها بماء جارٍ 15 دقيقة على الأقل واطلب الرعاية الطبية.',SKIN='الجلد: انزع الملابس الملوثة واشطف بالماء بكثرة.',AIR='الاستنشاق: انتقل إلى هواء نقي واطلب المساعدة.',SWA='البلع: لا تُحدث قيئاً، اشرب ماءً وأبلغ المشرف فوراً.';
+X('حمض الكبريتيك','Sulfuric Acid','H2SO4','7664-93-9','h2so4,sulfuric,كبريتيك,حمض الكبريتيك','أكّال,!يتفاعل مع الماء','يسبب حروقاً شديدة للجلد والعين.|يُطلق حرارة عالية جداً عند خلطه بالماء.|يتفاعل بعنف مع المواد العضوية والقواعد.',EYE+'|'+SKIN+'|'+SWA,'أضِفه إلى الماء ببطء وليس العكس.|عادله بمحلول قلوي ضعيف داخل الشفاط.|اجمعه في حاوية نفايات حمضية معنونة.');
+X('حمض النيتريك','Nitric Acid','HNO3','7697-37-2','hno3,nitric,نيتريك,حمض النيتريك,ماء الفضة','أكّال,!مؤكسد','يسبب حروقاً شديدة للجلد والعين.|مؤكسد قوي وقد يشعل المواد القابلة للاحتراق.|يطلق أبخرة بنية سامة (أكاسيد النيتروجين).',EYE+'|'+SKIN+'|'+AIR,'اعمل داخل الشفاط دائماً.|لا تخلطه مع المذيبات العضوية.|اجمعه في حاوية نفايات حمضية منفصلة ومعنونة.');
+X('حمض الأسيتيك (الخليك)','Acetic Acid','CH3COOH','64-19-7','ch3cooh,acetic,اسيتيك,خليك,حمض الخل,حمض الاسيتيك','قابل للاشتعال,أكّال','الحمض المركز يسبب حروقاً للجلد والعين.|سائله وأبخرته قابلة للاشتعال.|أبخرته تهيّج الأنف والحلق.',EYE+'|'+SKIN+'|'+AIR,'خففه بالماء وعادله ببيكربونات الصوديوم.|اجمع المركز في حاوية نفايات حمضية.|أبعده عن مصادر الاشتعال.');
+X('الأمونيا (محلول)','Ammonia Solution','NH3','7664-41-7','nh3,ammonia,امونيا,الامونيا,نشادر','أكّال,!ضار بالبيئة','المحلول المركز يحرق الجلد والعين.|الأبخرة تهيّج الجهاز التنفسي بشدة.|سامة للكائنات المائية.',EYE+'|'+AIR+'|'+SKIN,'اعمل داخل الشفاط.|عادله بحمض مخفف قبل الجمع.|لا تصبّه في المجاري؛ اجمعه في حاوية قلوية معنونة.');
+X('الإيثانول','Ethanol','C2H5OH','64-17-5','ethanol,c2h5oh,ايثانول,الايثانول,كحول','شديد الاشتعال','سائل وأبخرة شديدة الاشتعال.|يهيّج العين.|الأبخرة قد تسبب الدوخة.','العين: اغسلها بالماء 15 دقيقة.|'+AIR+'|البلع: اطلب المساعدة الطبية إذا كانت الكمية كبيرة.','أبعده عن اللهب والشرر.|اجمعه في حاوية نفايات مذيبات عضوية.|لا تصبّه في المجاري.');
+X('الميثانول','Methanol','CH3OH','67-56-1','methanol,ch3oh,ميثانول,الميثانول,كحول الخشب','شديد الاشتعال,سام','سام عند البلع أو الاستنشاق أو لمس الجلد.|قد يسبب العمى وتلف الأعصاب.|سائل وأبخرة شديدة الاشتعال.',SWA+' واطلب الإسعاف.|'+SKIN+'|'+AIR,'اجمعه في حاوية نفايات مذيبات معنونة.|لا تصبّه في المجاري أبداً.|اعمل داخل الشفاط.');
+X('الأسيتون','Acetone','C3H6O','67-64-1','acetone,c3h6o,اسيتون,الاسيتون','شديد الاشتعال,!يهيّج العين','سائل وأبخرة شديدة الاشتعال.|يسبب تهيجاً شديداً للعين.|التعرض المتكرر يجفف الجلد.|الأبخرة قد تسبب النعاس.',EYE+'|'+AIR+'|'+SKIN,'اجمعه في حاوية نفايات مذيبات عضوية.|أبعده عن مصادر الاشتعال.|لا تصبّه في المجاري.');
+X('بيروكسيد الهيدروجين','Hydrogen Peroxide','H2O2','7722-84-1','h2o2,hydrogen peroxide,بيروكسيد الهيدروجين,ماء الاكسجين,الماء الاكسجيني','مؤكسد,أكّال','المركز (30% فأكثر) يحرق الجلد والعين.|مؤكسد قد يشعل المواد القابلة للاحتراق.|يتحلل ويطلق أكسجين وقد يتسبب بضغط داخل العبوة.',EYE+'|'+SKIN+'|'+SWA,'خففه بالماء بكثرة للكميات الصغيرة.|لا تغلق حاوية نفاياته بإحكام.|لا تخلطه بالمواد العضوية.');
+X('كبريتات النحاس','Copper(II) Sulfate','CuSO4','7758-98-7','cuso4,copper sulfate,كبريتات النحاس,نحاس,الزرقاء','ضار عند البلع,!ضار بالبيئة','ضار عند البلع.|يهيّج الجلد ويسبب تلفاً شديداً للعين.|شديد السمية للكائنات المائية.',EYE+'|'+SWA+'|'+SKIN,'لا تصبّه في المجاري.|اجمع المحاليل في حاوية نفايات معادن ثقيلة.');
+X('برمنجنات البوتاسيوم','Potassium Permanganate','KMnO4','7722-64-7','kmno4,permanganate,potassium permanganate,برمنجنات البوتاسيوم,برمنغنات','مؤكسد,!ضار بالبيئة','مؤكسد قوي ويشعل المواد القابلة للاحتراق.|ضار عند البلع ويسبب حروقاً للجلد والعين.|شديد السمية للكائنات المائية.',EYE+'|'+SKIN+'|'+SWA,'أبعده عن المواد العضوية والاحتراقية.|اجمعه في حاوية نفايات مؤكسدات.|لا تصبّه في المجاري.');
+X('نترات الفضة','Silver Nitrate','AgNO3','7761-88-8','agno3,silver nitrate,نترات الفضة,نيترات الفضة','أكّال,!ضار بالبيئة','يسبب حروقاً للجلد والعين ويصبغ الجلد باللون الأسود.|مؤكسد.|شديد السمية للكائنات المائية.',EYE+'|'+SKIN+'|'+SWA,'اجمع كل المحاليل في حاوية نفايات الفضة.|لا تصبّه في المجاري أبداً.');
+X('كلوريد الصوديوم','Sodium Chloride','NaCl','7647-14-5','nacl,sodium chloride,كلوريد الصوديوم,ملح الطعام,الملح','غير مصنّف كمادة خطرة','غير مصنّف كمادة خطرة بتراكيزه المعتادة.|الغبار قد يهيّج العين قليلاً.','العين: اغسلها بالماء.|الجلد: اشطف بالماء.|البلع: اشرب ماءً.','يمكن تخفيف المحاليل المخففة والتخلص منها حسب تعليمات المختبر.|اتبع سياسة المختبر قبل التصريف.');
+X('الهكسان','n-Hexane','C6H14','110-54-3','hexane,c6h14,هكسان,الهكسان','شديد الاشتعال,!ضار بالصحة','سائل وأبخرة شديدة الاشتعال.|قد يضر الخصوبة ويتلف الأعصاب بالتعرض المتكرر.|خطر عند الدخول إلى الرئتين بالبلع.',AIR+'|'+SKIN+'|البلع: لا تُحدث قيئاً واطلب الإسعاف.','اجمعه في حاوية نفايات مذيبات غير مهلجنة.|اعمل داخل الشفاط.|أبعده عن مصادر الاشتعال.');
+X('الكلوروفورم','Chloroform','CHCl3','67-66-3','chloroform,chcl3,كلوروفورم,الكلوروفورم','!ضار بالصحة,سام','ضار عند البلع ويُشتبه بأنه مسرطن.|سام عند الاستنشاق ويضر الكبد والكلى.|يهيّج الجلد والعين.',AIR+'|'+SKIN+'|'+SWA,'اجمعه في حاوية نفايات مذيبات مهلجنة منفصلة.|اعمل داخل الشفاط دائماً.|لا تصبّه في المجاري.');
+const GUIDE=[
+{t:'الملابس والوقاية',i:'shield',items:['ارتديت معطف المختبر مغلقاً بالكامل','ارتديت نظارات السلامة','ارتديت القفازات المناسبة للمادة','حذائي مغلق ولا أرتدي صندلاً','ربطت الشعر الطويل وأزلت الإكسسوارات المتدلية']},
+{t:'المواد وبيئة العمل',i:'flask',items:['قرأت ورقة بيانات السلامة لكل مادة سأستخدمها','تأكدت من وضوح الملصقات على كل القوارير','طاولتي نظيفة ومرتبة','أعرف أين توجد حاويات النفايات الكيميائية','سأعمل داخل الشفاط عند التعامل مع الأبخرة']},
+{t:'الطوارئ',i:'alert',items:['أعرف موقع مغسلة العين ودش الطوارئ','أعرف موقع طفاية الحريق وحقيبة الإسعاف','أعرف مخرج الطوارئ وطريق الإخلاء','أعرف رقم المشرف وأرقام الطوارئ']}];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const ic=n=>`<svg class="i"><use href="#${n}"/></svg>`;
+const norm=s=>s.toLowerCase().replace(/[\u064B-\u0652\u0640]/g,'').replace(/[إأآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').trim();
+
+function go(id){$$('.view').forEach(v=>v.classList.toggle('on',v.id===id));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===id));scrollTo(0,0)}
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+
+/* Guide */
+let state={};
+function renderGuide(){
+ $('#groups').innerHTML=GUIDE.map((g,gi)=>`<div class="group"><h3>${ic(g.i)}${g.t}</h3>${g.items.map((x,i)=>`<label class="chk"><input type="checkbox" data-k="${gi}-${i}" ${state[gi+'-'+i]?'checked':''}><span>${x}</span></label>`).join('')}</div>`).join('');
+ $$('#groups input').forEach(c=>c.addEventListener('change',()=>{state[c.dataset.k]=c.checked;upd()}));upd();
+}
+function upd(){const all=$$('#groups input'),n=all.filter(c=>c.checked).length;$('#bar').style.width=(n/all.length*100)+'%';$('#done').style.display=n===all.length?'block':'none'}
+$('#reset').addEventListener('click',()=>{state={};renderGuide()});
+renderGuide();
+
+/* MSDS */
+function card(c){
+ return `<article class="card"><div class="head"><h3>${c.ar}</h3><small>${c.en} · ${c.f} · CAS ${c.cas}</small><div class="badges">${c.badges.map(b=>`<span class="badge ${b[1]?'w':''}">${b[0]}</span>`).join('')}</div></div>
+ <div class="sec h"><h4>${ic('alert')}المخاطر</h4><ul>${c.haz.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+ <div class="sec f"><h4>${ic('aid')}الإسعافات الأولية</h4><ul>${c.aid.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+ <div class="sec d"><h4>${ic('trash')}التخلص الآمن</h4><ul>${c.disp.map(x=>`<li>${x}</li>`).join('')}</ul></div></article>`}
+function find(q){q=norm(q);if(!q)return[];return CHEM.filter(c=>c.alias.concat([c.ar,c.en,c.f]).some(a=>norm(a).includes(q)))}
+function show(c){$('#result').innerHTML=card(c);$('#sug').innerHTML='';$('#q').value=c.ar}
+function renderChips(){$('#chips').innerHTML=CHEM.map(c=>`<button class="chip" data-id="${c.id}">${c.ar}</button>`).join('')}renderChips();
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b)show(CHEM.find(c=>c.id===b.dataset.id))});
+$('#q').addEventListener('input',e=>{
+ const r=find(e.target.value);
+ $('#sug').innerHTML=e.target.value&&r.length?`<div class="sug">${r.map(c=>`<button data-id="${c.id}">${c.ar} — ${c.f}</button>`).join('')}</div>`:'';
+ $$('#sug button').forEach(b=>b.addEventListener('click',()=>show(CHEM.find(c=>c.id===b.dataset.id))));
+ if(!e.target.value)$('#result').innerHTML='<div class="empty">ابدأ بالكتابة أو اختر مادة من الاقتراحات.</div>';
+ else if(!r.length)$('#result').innerHTML='<div class="empty">لا توجد نتيجة لهذه المادة. جرّب الاسم الإنجليزي أو الصيغة الكيميائية. إن لم تجدها فهي غير مضافة بعد.</div>';
+ else if(r.length===1)$('#result').innerHTML=card(r[0]);
+});
+
+/* Scanner (simulated OCR) */
+let busy=false;
+function simulate(withImg){
+ if(busy)return;busy=true;
+ const cam=$('#cam');cam.classList.add('busy');$('#camHint').style.display='none';
+ $('#scanOut').innerHTML='<div class="ocr">جارٍ قراءة النص من الملصق…</div>';
+ setTimeout(()=>{
+  cam.classList.remove('busy');
+  const c=CHEM[Math.floor(Math.random()*CHEM.length)];
+  if(!withImg){$('#lbl').classList.add('on');$('#lbl').innerHTML=`<div class="dia"></div><b>${c.en.toUpperCase()}</b><br>${c.f} · CAS ${c.cas}<br>DANGER: Corrosive. Wear protective gloves and eye protection.`}
+  $('#scanOut').innerHTML=`<div class="ocr">تم التعرف على النص:<code>${c.en.toUpperCase()}\n${c.f} | CAS ${c.cas}</code>هذه قراءة تجريبية محاكاة. تأكد دائماً من الملصق الأصلي.</div>${card(c)}`;
+  busy=false;
+ },1800);
+}
+$('#snap').addEventListener('click',()=>{cam=$('#cam');$$('#cam img').forEach(i=>i.remove());simulate(false)});
+$('#upl').addEventListener('click',()=>$('#file').click());
+$('#file').addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;
+ $$('#cam img').forEach(i=>i.remove());$('#lbl').classList.remove('on');
+ const im=new Image();im.alt='صورة الملصق المرفوعة';im.src=URL.createObjectURL(f);$('#cam').appendChild(im);
+ simulate(true);e.target.value='';
+});
+/* Login + admin */
+const BASE=CHEM.length;let db=null,usr=null,me=null,isAdmin=false,entered=false;
+const E=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const _go=go;go=id=>{if(id==='admin'&&!db)return;_go(id)};
+function msg(t,bad){const m=$('#amsg');m.textContent=t;m.style.color=bad?'var(--red)':'var(--green)'}
+function loginUI(){$('#lg-name').textContent=(me&&me.name)||'ضيف';$('#lg-role').textContent=isAdmin?'مشرف: يمكنه إضافة المواد':db?'طالب':'ضيف: تصفح فقط'}
+function roleUI(){if(!entered)return;$('#adminTab').hidden=!db;$('#adminOnly').hidden=!isAdmin;$('#mh').hidden=!isAdmin;$('#alist').hidden=!isAdmin;$('#atitle').textContent=isAdmin?'لوحة الإدارة':'رفع مادة';$('#asub').textContent=isAdmin?'مواد المشرف تظهر للجميع فوراً. راجع المواد المرسلة من الطلاب أدناه.':'أرسل مادة جديدة. لن تظهر للطلاب إلا بعد اعتماد المشرف.';$('#save').textContent=isAdmin?'إضافة المادة':'إرسال للاعتماد';const w=$('#who');w.hidden=false;w.textContent=((me&&me.name)||'ضيف')+(isAdmin?' · مشرف':'')+' | خروج'}
+$('#enter').addEventListener('click',()=>{entered=true;$('#login').hidden=true;roleUI()});
+$('#who').addEventListener('click',()=>{entered=false;$('#login').hidden=false;$('#who').hidden=true;$('#adminTab').hidden=true;_go('home')});
+function renderAdminList(){const cs=CHEM.slice(BASE);$('#alist').innerHTML=cs.length?cs.map(c=>`<div class="arow"><span>${c.ar} <small>${c.f}</small></span><button class="btn alt" data-del="${c.id}">حذف</button></div>`).join(''):'<div class="empty">لم تُضف مواد بعد.</div>'}
+$('#alist').addEventListener('click',async e=>{const id=e.target.dataset.del;if(!id||!confirm('حذف هذه المادة؟'))return;try{await db.collection('chemicals').doc(id).delete()}catch(x){msg('تعذر الحذف: تحتاج صلاحية المشرف.',1)}});
+let SUB=[];
+function renderPending(){$('#plist').innerHTML=SUB.length?SUB.map(s=>`<div class="arow" style="flex-direction:column;align-items:flex-start"><b>${E(s.ar||'')} <small>${E(s.f||'')} · ${E(s.by||'')}</small></b><small>${E((s.haz||[]).join(' / '))}</small><div style="display:flex;gap:8px"><button class="btn" data-ok="${E(s.id)}">اعتماد</button><button class="btn alt" data-no="${E(s.id)}">رفض</button></div></div>`).join(''):'<div class="empty">لا توجد مواد بانتظار الاعتماد.</div>'}
+$('#plist').addEventListener('click',async e=>{const ok=e.target.dataset.ok,id=ok||e.target.dataset.no;if(!id)return;const s=SUB.find(x=>x.id===id);try{if(ok&&s){const{id:_i,by:_b,...data}=s;await db.collection('chemicals').doc(id).set(data)}await db.collection('submissions').doc(id).delete()}catch(x){msg('تعذر تنفيذ الإجراء: تحتاج صلاحية المشرف.',1)}});
+$('#save').addEventListener('click',async()=>{
+ const g=i=>$('#'+i).value.trim(),L=i=>g(i).split('\n').map(s=>s.trim()).filter(Boolean);
+ if(!db)return msg('الحفظ غير متاح في هذا الوضع.',1);
+ if(!g('f-ar')||!L('f-haz').length||!L('f-aid').length||!L('f-dis').length)return msg('أكمل الاسم والمخاطر والإسعافات والتخلص الآمن.',1);
+ const badges=g('f-bd').split(',').map(s=>s.trim()).filter(Boolean).map(s=>({n:s.replace(/^!/,''),w:s[0]==='!'}));
+ try{await db.collection(isAdmin?'chemicals':'submissions').doc('u'+Date.now()).set({by:(me&&me.name)||'',ar:g('f-ar'),en:g('f-en'),f:g('f-f'),cas:g('f-cas')||'-',alias:g('f-al'),badges,haz:L('f-haz'),aid:L('f-aid'),disp:L('f-dis')});$$('#admin input,#admin textarea').forEach(i=>i.value='');msg(isAdmin?'تمت إضافة المادة، وهي ظاهرة الآن للجميع.':'تم إرسال المادة. ستظهر للجميع بعد اعتماد المشرف.')}catch(e){msg('تعذر الحفظ: تحتاج صلاحية المشرف.',1)}
+});
+renderAdminList();
+(async()=>{
+ if(typeof claude!=='undefined'){
+  try{usr=await claude.use('user');db=await claude.use('db')}catch(e){}
+  if(usr){try{me=await usr.me();isAdmin=!!me.canEdit}catch(e){}}
+  if(db){try{db.collection('chemicals').onSnapshot(s=>{CHEM.length=BASE;s.docs.forEach(d=>{const x=d.data()||{};CHEM.push({id:d.id,ar:E(x.ar||''),en:E(x.en||''),f:E(x.f||''),cas:E(x.cas||'-'),alias:String(x.alias||'').split(',').map(a=>a.trim()).concat([x.ar||'',x.en||'']),badges:(x.badges||[]).map(b=>[E(b.n),b.w?1:0]),haz:(x.haz||[]).map(E),aid:(x.aid||[]).map(E),disp:(x.disp||[]).map(E)})});renderChips();renderAdminList()},()=>{})}catch(e){}}
+ }
+ if(db&&isAdmin){try{db.collection('submissions').onSnapshot(s=>{SUB=s.docs.map(d=>({id:d.id,...d.data()}));renderPending()},()=>{})}catch(e){}}
+ loginUI();roleUI();renderPending();
+})();
+</script>
+</body>
+</html>
